@@ -48,6 +48,9 @@ When the route for "demo" is called, Cloud Foundry will call the ratelimiter-ser
 ```
 cf bind-route-service <DOMAIN> ratelimiter-service --hostname <HOST_NAME>
 ```
+- example: 
+- - demo route -> demo-funny-mandrill-jt.cfapps.eu10.hana.ondemand.com
+- - cf brs cfapps.eu10.hana.ondemand.com ratelimiter-service --hostname demo-funny-mandrill-jt
 
 ### Set the rate limiting environment variable for "ratelimiter"
 Setting this env var to 1, means that if we call the app greater than once per second, we will see "Too many requests".
