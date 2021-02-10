@@ -43,7 +43,7 @@ The following will create a route service instance using a user-provided service
 cf cups ratelimiter-service -r https://<RATE-LIMITER-URL>
 ```
 
-### Bind "ratelimiter-service" route to "demo" route
+### Bind "ratelimiter-service" service to "demo" route
 When the route for "demo" is called, Cloud Foundry will call the ratelimiter-service.
 ```
 cf bind-route-service <DOMAIN> ratelimiter-service --hostname <HOST_NAME>
@@ -54,7 +54,7 @@ example:
     - HOST_NAME: demo-funny-mandrill-jt
 
 ### Set the rate limiting environment variable for "ratelimiter"
-Setting this env var to 1, means that if we call the app greater than once per second, we will see "Too many requests".
+Setting this env var to 1, means that if we call the app more than once per second, we will see "Too many requests".
 ```
 cf set-env RATE_LIMIT ratelimiter 1
 ```
