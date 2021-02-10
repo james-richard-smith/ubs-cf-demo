@@ -6,6 +6,14 @@
 
 ## Instructions
 
+### Concepts covered:
+- Deploying apps using a manifest (cf push -f)
+- Creating and binding services (cf cs, cf bs)
+- Creating user-provided-services (cf cups)
+- Setting environment variables (cf set-env)
+
+## Instructions
+
 ### Deploy the Spring Boot app ("demo")
 ```
 cd demo
