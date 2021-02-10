@@ -1,0 +1,61 @@
+# UBS Cloud Foundry Demo
+
+## About
+- A Spring Boot application that reads and writes Employee data (id, name, email) to a PostreSQL database.
+- Also, comes with a rate-limiting app that we will use to create a route service.
+
+## Instructions
+
+### Deploy the Spring Boot app ("demo")
+```
+cd demo
+cf push -f manifest.yml
+```
+
+### Create the PostgreSQL service
+```
+cf marketplace | grep sql
+cf create-service <SERVICE> <PLAN> demo-db
+```
+
+### Bind the database service to "demo"
+```
+cf bind-service demo demo-db
+cf restage demo
+```
+
+### Read and write to "demo"
+```
+curl https://<DEMO_URL>/employee
+curl --request POST 'https://<DEMO_URL>/employee?name=bob&email=bob@bobsyouruncle.com'
+curl https://<DEMO_URL>/employee
+```
+
+### Deploy rate limiter app ("ratelimiter")
+```
+cd ratelimit-service
+cf push ratelimiter
+```
+
+### Turn "ratelimiter" into a route service for "demo"
+The following will create a route service instance using a user-provided service
+```
+cf cups ratelimiter-service -r https://<RATE-LIMITER-URL>
+```
+
+### Bind "ratelimiter-service" route to "demo" route
+When the route for "demo" is called, Cloud Foundry will call the ratelimiter-service.
+```
+cf bind-route-service <DOMAIN> ratelimiter-service --hostname <HOST_NAME>
+```
+
+### Set the rate limiting environment variable for "ratelimiter"
+Setting this env var to 1, means that if we call the app greater than once per second, we will see "Too many requests".
+```
+cf set-env RATE_LIMIT ratelimiter 1
+```
+
+### Execute a script to call "demo" more than once per second
+```
+bash ratelimiter-script.sh <DEMO_URL>
+```
