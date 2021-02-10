@@ -1,7 +1,7 @@
 # UBS Cloud Foundry Demo
 
 ## About
-- A Spring Boot application that reads and writes Employee data (id, name, email) to a PostreSQL database.
+- A Spring Boot application that reads and writes Employee data (id, name, email) to a MySQL/PostreSQL database.
 - Also, comes with a rate-limiting app that we will use to create a route service.
 
 ## Instructions
@@ -16,11 +16,11 @@
 
 ### Deploy the Spring Boot app ("demo")
 ```
-cd demo
-cf push -f manifest.yml
+cd ubs-cf-demo/demo
+cf push -f manifest.yml --random-route --no-start
 ```
 
-### Create the PostgreSQL service
+### Create the database service
 ```
 cf marketplace | grep sql
 cf create-service <SERVICE> <PLAN> demo-db
@@ -60,10 +60,12 @@ cf bind-route-service <DOMAIN> ratelimiter-service --hostname <HOST_NAME>
 ### Set the rate limiting environment variable for "ratelimiter"
 Setting this env var to 1, means that if we call the app more than once per second, we will see "Too many requests".
 ```
-cf set-env RATE_LIMIT ratelimiter 1
+cf set-env ratelimiter RATE_LIMIT 1
+cf restage ratelimiter
 ```
 
 ### Execute a script to call "demo" more than once per second
 ```
+cd ..
 bash ratelimiter-script.sh <DEMO_URL>
 ```
