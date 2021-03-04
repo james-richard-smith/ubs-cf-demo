@@ -6,6 +6,11 @@
 
 ## Instructions
 
+### Build the project using maven:
+```
+mvn package
+```
+
 ### Concepts covered:
 - Deploying apps using a manifest (cf push -f)
 - Creating and binding services (cf cs, cf bs)
@@ -19,6 +24,8 @@
 cd ubs-cf-demo/demo
 cf push -f manifest.yml --random-route --no-start
 ```
+
+This will show as `down` since we used the flag `--no-start`
 
 ### Create the database service
 ```
