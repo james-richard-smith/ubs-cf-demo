@@ -28,9 +28,11 @@ cf push -f manifest.yml --random-route --no-start
 This will show as `down` since we used the flag `--no-start`
 
 ### Create the database service
+In order to access to Postgres DB we need to create a technical user service selecting the postgres plan and the correct entity.
+You can use the correct Entity Name (FAXXXX), a technical user created for Postgres DB access.
+
 ```
-cf marketplace | grep sql
-cf create-service <SERVICE> <PLAN> demo-db
+cf create-service u.technical-user postgres <SERVICE-NAME> -c '{\"identity\”:\”<TECHNICAL_USER>\”,\”entry\”:\”<KEY_NAME>”,\”jdbcUrl\":\"postgresql://<HOST_NAME>:<PORT_NUMBER>/<DATABASE_NAME>?user=<TECHNICAL_USER for DB>\”}’
 ```
 
 ### Bind the database service to "demo"
