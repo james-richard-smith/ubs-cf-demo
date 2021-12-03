@@ -35,7 +35,7 @@ Run the following code in the command line to see if Postgres service is availab
 cf marketplace
 
 ```
-If Postgres service is not provisioned in PCF Marketplace due to UBS policy then use H2 database
+If Postgres service is not listed in PCF Marketplace due to UBS policy then use H2 database
 
 If Postgres is listed under Marketplace services
 Run the following code in the command line to see what plans are available for PostgreSQL:
