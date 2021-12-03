@@ -28,11 +28,36 @@ cf push -f manifest.yml --random-route --no-start
 This will show as `down` since we used the flag `--no-start`
 
 ### Create the database service
-In order to access to Postgres DB we need to create a technical user service selecting the postgres plan and the correct entity.
-You can use the correct Entity Name (FAXXXX), a technical user created for Postgres DB access.
+In order to access to Postgres DB we need to create a Postgres service from PCF Marketplace.
+Run the following code in the command line to see if Postgres service is available
 
 ```
-cf create-service u.technical-user postgres <SERVICE-NAME> -c '{\"identity\”:\”<TECHNICAL_USER>\”,\”entry\”:\”<KEY_NAME>”,\”jdbcUrl\":\"postgresql://<HOST_NAME>:<PORT_NUMBER>/<DATABASE_NAME>?user=<TECHNICAL_USER for DB>\”}’
+cf marketplace
+
+```
+If Postgres service is not provisioned in PCF Marketplace due to UBS policy then use H2 database
+
+If Postgres is listed under Marketplace services
+Run the following code in the command line to see what plans are available for PostgreSQL:
+```
+cf marketplace -e postgres
+
+```
+
+Run the following code in the command line to create the Postgres service
+```
+cf create-service postgres PLAN SERVICE_NAME
+
+```
+where PLAN is the plan you want, and SERVICE_NAME is a unique descriptive name for this service instance. For example:
+```
+cf create-service postgres small-12 demo-db
+
+```
+It will take between 5 and 10 minutes to set up the service instance. To check its progress, run:
+```
+cf service SERVICE_NAME
+
 ```
 
 ### Bind the database service to "demo"
